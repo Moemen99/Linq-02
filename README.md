@@ -95,3 +95,79 @@ foreach (int number in OddNumbers)
 - Improved code readability and maintainability.
 
 This overview provides additional context on how LINQ operates with sequences and demonstrates a practical example of using LINQ operators on a collection.
+
+
+# LINQ Syntax Overview
+
+LINQ provides two main syntax styles for writing queries:
+
+1. Fluent Syntax
+2. Query Syntax (Expression Syntax)
+
+## 1. Fluent Syntax
+
+Fluent syntax is similar to writing normal C# methods. It can be used in two ways:
+
+### 1.1 Static Method Calls via Enumerable Class
+
+```csharp
+List<int> Numbers = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+// Using Enumerable.Where static method
+var OddNumbers = Enumerable.Where(Numbers, N => N % 2 == 1);
+
+foreach (int Number in OddNumbers)
+{
+    Console.WriteLine(Number);
+}
+```
+
+Note: 
+- We use `var` to avoid specifying the return type explicitly.
+- `Enumerable.Where()` takes the collection as its first argument.
+
+### 1.2 Extension Method Calls
+
+```csharp
+// Using Where as an extension method
+var OddNumbers = Numbers.Where(N => N % 2 == 1);
+```
+
+## 2. Query Syntax (Expression Syntax)
+
+Query syntax is similar to SQL style but follows the order of execution:
+
+```csharp
+var OddNumbers = from N in Numbers
+                 where N % 2 == 1
+                 select N;
+```
+
+Key points for Query Syntax:
+- Must begin with the keyword `from`
+- Must end with either `select` or `groupby`
+- Follows the order of execution (unlike SQL)
+
+Equivalent SQL-style query (for comparison):
+```sql
+SELECT *
+FROM Numbers N
+WHERE N % 2 = 1
+```
+
+## Comparison and Usage
+
+- Both syntaxes are functionally equivalent.
+- Choice between them often depends on personal preference and specific use case.
+- Query syntax can be more readable for complex queries, especially those involving joins or grouping.
+- Fluent syntax can be more concise for simple queries and offers more flexibility for method chaining.
+
+Example of a more complex query using Query Syntax:
+```csharp
+var query = from N in Numbers
+            where N % 2 == 1
+            orderby N descending
+            select new { OddNumber = N, Square = N * N };
+```
+
+Remember, the choice between Fluent and Query syntax often depends on which is easier to read and understand in a given context. Some operations (like complex joins or groupings) might be easier to express in one syntax over the other.
